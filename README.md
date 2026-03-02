@@ -11,7 +11,7 @@ With the Developer Debug Info, I noticed:
 -The attempts started at 0
 -The “attempts left” display wasn't accurate
 -It sometimes said “Out of attempts” while still showing 1 attempt left
-4. The only functionality of the "New Game" button was just resetting the number. Evrything else remained, including the score, guess history, and attempt history.
+4. The only functionality of the "New Game" button was just resetting the number. Evrything else remained, including the score, guess history, and attempt history. Might be something with the session state. 
 
 
 Phase 2: Investigate & Repair (Assigned)
@@ -24,18 +24,20 @@ By updating the conditional checks to ensure the "Go Higher/Lower", it now promp
 - Added is_within_range(guess, low, high) with documentation.
 - Imported is_within_range
 - Restructured guess submission:
-- Parse the input
-- Check against the range
-- Only valid, in‑range guesses increase the attempt count and proceed to normal game flow
+-  Parse the input
+-  Check against the range
+-  Only valid, in‑range guesses increase the attempt count and proceed to normal game flow
 - Error message shown:
-- Guess must be between {low} and {high}.
+-  Guess must be between {low} and {high}.
  <img width="1757" height="822" alt="image" src="https://github.com/user-attachments/assets/9bc41c2f-0903-43c3-afda-cf84bef9891d" />
 
  Hints:
  - Test the boundaries: Try guessing 1 or the highest number possible. Check if the "Higher/Lower" hints actually make sense at the extremes.
  - Toggle the difficulty: Switch between levels and see what changes.
  - Definetly use the Developer Debug section, it is meant exactly for debugging. Also, keep an eye on the session data to see if it updates correctly every time something is clicked.
+ - Don't be afraid to tinker around with the code and refreshing the page to implement those changes. A lot of it is trial and error.
 
 
 Phase 3: Reflection & README (Review)
 Overall, there were some blatant bugs that affected the gameplay and player experience. Some of that core logic was able to be revised by tweaking existing functions, as well as adding some helper functions. Some of the structure was reworked to make way for the new helper functions or polish the logic.
+I knew the bugs were fixed after testing "edge" numbers like 1 and 100 to make sure the hints finally made sense. In Streamlit, every click is like hitting the "refresh" button, which causes the whole script to rerun from the top. Without session state, the app loses its "memory" and forgets the secret number every time you guess. By saving the number in st.session_state, the game now had a stable memory so the target stays the same until the player wins.
